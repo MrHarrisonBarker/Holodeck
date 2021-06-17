@@ -1,33 +1,51 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Holodeck
 {
     public interface IMetaDetector
     {
-        Task<MetaData> FindAsync(string id, PathString path);
+        Task<SingleMeta> FindAsync(string name, Uri uri);
     }
 
     public class MetaDetector : IMetaDetector
     {
-        private ILogger<MetaDetector> Logger;
+        private readonly ILogger<MetaDetector> Logger;
+        private readonly MetaContext MetaContext;
 
-        public MetaDetector(ILogger<MetaDetector> logger)
+        public MetaDetector(ILogger<MetaDetector> logger, MetaContext metaContext)
         {
             Logger = logger;
+            MetaContext = metaContext;
         }
 
 
-        public Task<MetaData> FindAsync(string id, PathString path)
+        public async Task<SingleMeta> FindAsync(string name, Uri uri)
         {
-            Logger.LogInformation($"Finding metadata for \"{id}\" {path.Value}");
+            Logger.LogInformation($"Finding metadata for \"{name}\" {uri.AbsolutePath}");
 
-            return Task.FromResult(new MetaData()
+            try
             {
-                Id = "NumberOne",
-                Name = "Chatsubo"
-            });
+                var singleMeta =  await MetaContext.Metas.Select(x => new SingleMeta()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Template = x.Templates.FirstOrDefault(x => x.Path == uri.AbsolutePath)
+                }).FirstOrDefaultAsync(x => x.Name == name);
+
+                if (singleMeta == null) throw new Exception($"Meta for \"{name}\" not found");
+                
+                return singleMeta;
+            }
+            catch (Exception e)
+            {
+                Logger.LogInformation(e.Message);
+                throw;
+            }
         }
     }
 }

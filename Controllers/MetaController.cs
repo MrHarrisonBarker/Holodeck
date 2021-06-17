@@ -1,4 +1,4 @@
-using System.Text;
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -19,14 +19,18 @@ namespace Holodeck.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetMeta(string key)
+        public async Task<ActionResult> GetMeta(string key = "Chatsubo")
         {
             Logger.LogInformation("Getting meta");
 
-            var metaData = await MetaDetector.FindAsync(key,HttpContext.Request.Path);
-            
-            
-            return Ok(MetaUtils.GenerateMetaFile(metaData));
+            if (HttpContext.Request.Headers.TryGetValue("Referer", out var referer))
+            {
+                var metaData = await MetaDetector.FindAsync(key, new Uri(referer));
+
+                return Ok(MetaUtils.GenerateSingleMetaFile(metaData));   
+            }
+
+            return BadRequest();
         }
     }
 }
