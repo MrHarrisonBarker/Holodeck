@@ -52,6 +52,8 @@
  *
  */
 
+import './Holodeck.js';
+
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
