@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import {SingleMeta} from "../_models/MetaData";
 import {MetaService} from "../_services/meta.service";
+import {HomeComponent} from "../home/home.component";
 
 @Component({
   selector: 'holo-deck',
@@ -19,28 +20,27 @@ import {MetaService} from "../_services/meta.service";
 })
 export class HoloDeckComponent implements OnInit, AfterViewInit
 {
+  private readonly Meta: SingleMeta;
+  private readonly Template: string;
+
   @ViewChild(
     'container',
     {read: ViewContainerRef, static: false}
   ) container: ViewContainerRef;
 
-  constructor (private compiler: Compiler)
+  constructor (private metaService: MetaService, private compiler: Compiler)
   {
-  }
+    if (this.Meta == null)
+    {
+      this.Meta = metaService.CurrentMeta;
+    }
 
-  // constructor (private metaService: MetaService, private componentFactoryResolver: ComponentFactoryResolver)
-  // {
-  //   // if (this.Meta == null)
-  //   // {
-  //   //   this.Meta = metaService.CurrentMeta;
-  //   // }
-  //   //
-  //   // console.log("[holo-deck] meta ->", this.Meta);
-  //   //
-  //   // this.Template = this.Meta.Template;
-  //   //
-  //   // console.log("[holo-deck] template ->", this.Template);
-  // }
+    console.log("[holo-deck] meta ->", this.Meta);
+
+    this.Template = this.Meta.Template;
+
+    console.log("[holo-deck] template ->", this.Template);
+  }
 
   ngOnInit (): void
   {
@@ -49,16 +49,18 @@ export class HoloDeckComponent implements OnInit, AfterViewInit
   ngAfterViewInit (): void
   {
     let component = Component({
-      template: '<div>Test value: {{test}}</div>',
+      template: this.Template,
       styles: [':host {color: red}']
-    })(class
+    })(class InnerHome extends HomeComponent
     {
-      test = 'some value';
     });
 
-    let module = NgModule({declarations: [component]})(class {});
+    let module = NgModule({declarations: [component]})(class
+    {
+    });
 
-    this.compiler.compileModuleAndAllComponentsAsync(module).then(factories => {
+    this.compiler.compileModuleAndAllComponentsAsync(module).then(factories =>
+    {
       // Get the component factory.
       const componentFactory = factories.componentFactories[0];
       // Create the component and add to the view.

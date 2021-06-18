@@ -5,5 +5,5 @@ import { Component } from '@angular/core';
   templateUrl: './home.component.html',
 })
 export class HomeComponent {
-  title = "Hello, world!"
+  title = "Hello, world! welcome to holodeck"
 }
