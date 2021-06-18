@@ -7,7 +7,7 @@ namespace Holodeck.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MetaController : ControllerBase
+    public partial class MetaController : ControllerBase
     {
         private readonly ILogger<MetaController> Logger;
         private readonly MetaDetector MetaDetector;
@@ -27,7 +27,7 @@ namespace Holodeck.Controllers
             {
                 var metaData = await MetaDetector.FindAsync(key, new Uri(referer));
 
-                return Ok(MetaUtils.GenerateSingleMetaFile(metaData));   
+                return new JavascriptResult(MetaUtils.GenerateSingleMetaFile(metaData));   
             }
 
             return BadRequest();

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {MetaService} from "./_services/meta.service";
 
 @Component({
   selector: 'app-root',
@@ -6,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+
+  constructor (private metaService: MetaService)
+  {
+  }
+
+  getMeta ()
+  {
+    console.log(this.metaService.CurrentMeta);
+  }
 }

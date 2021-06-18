@@ -9,10 +9,10 @@ namespace Holodeck
 
         public static string GenerateSingleMetaFile(SingleMeta singleMeta)
         {
-            var meta = "const meta = {";
+            var meta = "const singleMeta = {";
 
-            meta += $"name:\"{singleMeta.Name}\",";
-            meta += $"template:\"{singleMeta.Template.Source}\",";
+            meta += $"Name:\"{singleMeta.Name}\",";
+            meta += $"Template:\"{singleMeta.Template.Source}\",";
             
             return meta + "};";
         }
