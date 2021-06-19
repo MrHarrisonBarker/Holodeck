@@ -10,6 +10,7 @@ import {HomeComponent} from './home/home.component';
 import {CounterComponent} from './counter/counter.component';
 import {FetchDataComponent} from './fetch-data/fetch-data.component';
 import {HoloDeckComponent} from './holo-deck/holo-deck.component';
+import { HoloDeckCompiledComponent } from './holo-deck-compiled/holo-deck-compiled.component';
 
 @NgModule({
   schemas: [NO_ERRORS_SCHEMA],
@@ -19,7 +20,8 @@ import {HoloDeckComponent} from './holo-deck/holo-deck.component';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    HoloDeckComponent
+    HoloDeckComponent,
+    HoloDeckCompiledComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),

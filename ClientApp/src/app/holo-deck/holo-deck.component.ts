@@ -3,10 +3,9 @@ import {
   AfterViewInit,
   Compiler,
   Component,
-  ComponentFactoryResolver,
   Input, NgModule,
   OnInit,
-  TemplateRef, ViewChild,
+  ViewChild,
   ViewContainerRef
 } from '@angular/core';
 import {SingleMeta} from "../_models/MetaData";
@@ -18,8 +17,10 @@ import {HomeComponent} from "../home/home.component";
   templateUrl: './holo-deck.component.html',
   styleUrls: ['./holo-deck.component.css']
 })
-export class HoloDeckComponent implements OnInit, AfterViewInit
+export class HoloDeckComponent<T> implements OnInit, AfterViewInit
 {
+  // @Input() Parent = Object.getPrototypeOf(HomeComponent).constructor;
+
   private readonly Meta: SingleMeta;
   private readonly Template: string;
 
@@ -51,7 +52,8 @@ export class HoloDeckComponent implements OnInit, AfterViewInit
     let component = Component({
       template: this.Template,
       styles: [':host {color: red}']
-    })(class InnerHome extends HomeComponent
+    })(// @ts-ignore
+      class extends this.Parent
     {
     });
 
