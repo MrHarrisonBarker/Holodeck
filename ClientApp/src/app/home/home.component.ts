@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import {namingPrefix} from "../../main";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-home',
-  templateUrl: './' + namingPrefix + 'home.component.html',
+  templateUrl: './' + environment.namingPrefix + 'home.component.html',
 })
 export class HomeComponent {
   title = "Hello, world! welcome to holodeck"

@@ -20,5 +20,3 @@ platformBrowserDynamic(providers).bootstrapModule(AppModule)
   .catch(err => console.log(err));
 
 // export { renderModule, renderModuleFactory } from '@angular/platform-server';
-
-export const namingPrefix = "different."
